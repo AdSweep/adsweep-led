@@ -18,6 +18,11 @@ function phStatus()
 	fi
 }
 
+function writeLed()
+{
+	echo $1 > led.status
+}
+
 # Get current led status
 function readLed()
 {
@@ -32,10 +37,11 @@ do
 	phs=$(phStatus)
 	if [ phs ] ;
 	then
-		echo Pi Hole status is OK
-		echo $(python /home/pi/adsweep-led/led.py greenOn)
+		echo "Pi Hole status is OK"
+		writeLed "greenOn"
 	else
-		echo Pi Hole status is NOT OK
-		echo $(python /home/pi/adsweep-led/led.py redOn)
+		echo "Pi Hole status is NOT OK"
+		writeLed "redOn"
 	fi
+	sleep 1
 done

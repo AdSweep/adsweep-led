@@ -1,0 +1,12 @@
+[Unit]
+Description=AdSweep LED controller Bash script
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/adsweep-led
+ExecStart=/home/pi/adsweep-led/led.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
