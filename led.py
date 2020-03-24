@@ -75,8 +75,8 @@ def main():
 	while True:
 		file = open("led.status", "r")
 		ledStatus = file.readline()
-		ledStatus.rstrip()
-		ledStatus.strip()
+		ledStatus = ledStatus.rstrip()
+		ledStatus = ledStatus.strip()
 		print ledStatus
 		if ledStatus == "greenOn":
 			greenOn()

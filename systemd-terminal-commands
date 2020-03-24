@@ -1,0 +1,15 @@
+# Copy service units to sytemd's folder
+sudo cp AdSweepLedPy.service /etc/systemd/system
+sudo cp AdSweepLedSh.service /etc/systemd/system
+
+# Start the services
+sudo systemctl start AdSweepLedPy.service
+sudo systemctl start AdSweepLedSh.service
+
+# Check if the services work properly
+systemctl status AdSweepLedPy
+systemctl status AdSweepLedSh
+
+# Stop the services
+sudo systemctl stop AdSweepLedPy.service
+sudo systemctl stop AdSweepLedSh.service
