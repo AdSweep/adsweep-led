@@ -5,7 +5,7 @@ Description=AdSweep LED controller Bash script
 Type=simple
 User=pi
 WorkingDirectory=/home/pi/adsweep-led
-ExecStart=/home/pi/adsweep-led/led.sh
+ExecStart=adsweep-led
 Restart=on-failure
 
 [Install]
