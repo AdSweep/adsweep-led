@@ -2,8 +2,11 @@ import sys, time
 import RPi.GPIO as GPIO
 
 # Pins the led is connected to on the 3b+
+# R is rechts, oranje kabel
 rPin  = 33
+# G is links, paarse kabel
 gPin = 12
+# B is midden, rode kabel
 bPin = 32
 
 # Use board pin numbers
@@ -30,65 +33,69 @@ rPWM.start(0)
 gPWM.start(0)
 bPWM.start(0)
 
+# Turn the led off
+def off():
+    rPWM.ChangeDutyCycle(0)
+    gPWM.ChangeDutyCycle(0)
+    bPWM.ChangeDutyCycle(0)
+
 # Green on: everything is OK
 def greenOn():
-	gPWM.ChangeDutyCycle(100)
+    off()
+    gPWM.ChangeDutyCycle(100)
 
 # Red on: Something is wrong with Pi-Hole
 def redOn():
-	rPWM.ChangeDutyCycle(100)
+    off()
+    rPWM.ChangeDutyCycle(100)
 
 # Flash green: booting the OS and Pi-Hole
 def greenFlash():
-	for dc in range(0, 100):
-		gPWM.ChangeDutyCycle(dc)
-		time.sleep(0.0075)
-	for dc in range(100, 0, -1):
-		gPWM.ChangeDutyCycle(dc)
-		time.sleep(0.01)
-	gPWM.ChangeDutyCycle(0)
-		
+    off()
+    for dc in range(0, 100):
+        gPWM.ChangeDutyCycle(dc)
+        time.sleep(0.0075)
+    for dc in range(100, 0, -1):
+        gPWM.ChangeDutyCycle(dc)
+        time.sleep(0.01)
+    gPWM.ChangeDutyCycle(0)
+        
 # Flash red: Something is VERY WRONG
 def redFlash():
-	for dc in range(0, 100):
-		rPWM.ChangeDutyCycle(dc)
-		time.sleep(0.0075)
-	for dc in range(100, 0, -1):
-		rPWM.ChangeDutyCycle(dc)
-		time.sleep(0.01)
-	rPWM.ChangeDutyCycle(0)
-
-# Turn the led off
-def off():
-	rPWM.ChangeDutyCycle(0)
-	gPWM.ChangeDutyCycle(0)
-	bPWM.ChangeDutyCycle(0)
+    off()
+    for dc in range(0, 100):
+        rPWM.ChangeDutyCycle(dc)
+        time.sleep(0.0075)
+    for dc in range(100, 0, -1):
+        rPWM.ChangeDutyCycle(dc)
+        time.sleep(0.01)
+    rPWM.ChangeDutyCycle(0)
 
 # Cleanup, not important
 def end():
-	rPWM.stop()
-	gPWM.stop()
-	bPWM.stop()
-	GPIO.cleanup()
+    rPWM.stop()
+    gPWM.stop()
+    bPWM.stop()
+    GPIO.cleanup()
 
 def main():
-	while True:
-		file = open("led.status", "r")
-		ledStatus = file.readline()
-		ledStatus = ledStatus.rstrip()
-		ledStatus = ledStatus.strip()
-		print ledStatus
-		if ledStatus == "greenOn":
-			greenOn()
-		if ledStatus == "greenFlash":
-			greenFlash()
-		if ledStatus == "redOn":
-			redOn()
-		if ledStatus == "redFlash":
-			redFlash()
-		if ledStatus == "off":
-			off()
-		time.sleep(1)
-	end()
+    while True:
+        file = open("led.status", "r")
+        ledStatus = file.readline()
+        ledStatus = ledStatus.rstrip()
+        ledStatus = ledStatus.strip()
+        print ledStatus
+        if ledStatus == "greenOn":
+            greenOn()
+        if ledStatus == "greenFlash":
+            greenFlash()
+        if ledStatus == "redOn":
+            redOn()
+        if ledStatus == "redFlash":
+            redFlash()
+        if ledStatus == "ledOff":
+            off()
+        time.sleep(1)
+    end()
 
 main()

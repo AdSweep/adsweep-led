@@ -10,7 +10,7 @@ PHSTATUSBLOCKING="Pi-hole blocking is Enabled"
 function phStatus()
 {
 	PHSTATUS=$(pihole status)
-	if [[ $PHSTATUS == *$PHSTATUSGOOD* && $PHSTATUS == *$PHSTATUSBLOCKING* ]];
+	if [[ $PHSTATUS == *$PHSTATUSDNS* && $PHSTATUS == *$PHSTATUSBLOCKING* ]];
 	then
 		echo 1
 	else
@@ -24,9 +24,9 @@ function writeLed()
 }
 
 # Get current led status
-function readLed()
+function readFile()
 {
-	file='led.status'
+	file=/etc/adsweep/isledon
 	while read line; do
 	echo $line
 	done < $file
@@ -34,14 +34,22 @@ function readLed()
 
 while [ 1 ]
 do
-	phs=$(phStatus)
-	if [ phs ] ;
+	ledon=$(readFile)
+	echo $ledon
+	if [ $ledon -eq 1 ];
 	then
-		echo "Pi Hole status is OK"
-		writeLed "greenOn"
+		phs=$(phStatus)
+		if [ $phs -eq 1 ] ;
+		then
+			echo "AdSweep status is OK"
+			writeLed "greenOn"
+		else
+			echo "AdSweep status is NOT OK"
+			writeLed "redOn"
+		fi
 	else
-		echo "Pi Hole status is NOT OK"
-		writeLed "redOn"
+		echo "Led is OFF"
+		writeLed "ledOff"
 	fi
 	sleep 1
 done

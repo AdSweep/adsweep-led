@@ -4,8 +4,8 @@ Description=AdSweep LED controller Bash script
 [Service]
 Type=simple
 User=pi
-WorkingDirectory=/home/pi/adsweep-led
-ExecStart=adsweep-led
+WorkingDirectory=/etc/adsweep
+ExecStart=/etc/adsweep/led.sh
 Restart=on-failure
 
 [Install]

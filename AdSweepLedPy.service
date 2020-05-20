@@ -4,8 +4,8 @@ Description=AdSweep LED controller python program
 [Service]
 Type=simple
 User=pi
-WorkingDirectory=/home/pi/adsweep-led
-ExecStart=python /home/pi/adsweep-led/led.py
+WorkingDirectory=/etc/adsweep
+ExecStart=python /etc/adsweep/led.py
 Restart=on-failure
 
 [Install]
